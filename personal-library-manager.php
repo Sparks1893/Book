@@ -25,3 +25,5 @@ register_deactivation_hook(__FILE__, 'plm_deactivate');
 require_once plugin_dir_path(__FILE__) . 'includes/book-taxonomies.php';
 require_once plugin_dir_path(__FILE__) . 'includes/book-meta.php';
 require_once plugin_dir_path(__FILE__) . 'includes/library-display.php';
+
+echo '<button class="plm-btn-wishlist" data-book="'.get_the_ID().'">♡ Wishlist</button>';
