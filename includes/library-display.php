@@ -23,3 +23,9 @@ function plm_library_shortcode() {
     return ob_get_clean();
 }
 add_shortcode('plm_library', 'plm_library_shortcode');
+
+echo '<div class="plm-actions">
+    <button class="plm-btn-wishlist" data-book="'.get_the_ID().'">♡ Wishlist</button>
+    <button class="plm-btn-favorite" data-book="'.get_the_ID().'">❤️ Favorite</button>
+    <button class="plm-btn-like" data-book="'.get_the_ID().'">👍 Like</button>
+</div>';
