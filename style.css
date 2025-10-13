@@ -1,0 +1,10 @@
+:root {
+  --plm-primary: #8b0000;
+  --plm-secondary: #d4af37;
+  --plm-background: #f9f4ef;
+  --plm-text: #2c2c2c;
+}
+
+body {
+  font-family: "Georgia", serif;
+}
