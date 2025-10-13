@@ -21,3 +21,7 @@ function plm_deactivate() {
     flush_rewrite_rules();
 }
 register_deactivation_hook(__FILE__, 'plm_deactivate');
+
+require_once plugin_dir_path(__FILE__) . 'includes/book-taxonomies.php';
+require_once plugin_dir_path(__FILE__) . 'includes/book-meta.php';
+require_once plugin_dir_path(__FILE__) . 'includes/library-display.php';
