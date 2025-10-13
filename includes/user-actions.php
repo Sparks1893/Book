@@ -145,3 +145,73 @@ add_action('wp_ajax_plm_toggle_wishlist', 'plm_toggle_wishlist');
 add_action('wp_ajax_nopriv_plm_toggle_wishlist', function() {
     wp_send_json_error('login_required');
 });
+/**
+ * Toggle Favorite
+ */
+function plm_toggle_favorite() {
+    if (!is_user_logged_in()) {
+        wp_send_json_error('login_required');
+    }
+
+    global $wpdb;
+    $table = $wpdb->prefix . 'plm_user_actions';
+    $user_id = get_current_user_id();
+    $book_id = intval($_POST['book_id']);
+
+    // Check if already favorited
+    $exists = $wpdb->get_var($wpdb->prepare(
+        "SELECT id FROM $table WHERE user_id = %d AND book_id = %d AND action_type = 'favorite'",
+        $user_id, $book_id
+    ));
+
+    if ($exists) {
+        $wpdb->delete($table, ['id' => $exists]);
+        wp_send_json_success('removed');
+    } else {
+        $wpdb->insert($table, [
+            'user_id' => $user_id,
+            'book_id' => $book_id,
+            'action_type' => 'favorite'
+        ]);
+        wp_send_json_success('added');
+    }
+}
+add_action('wp_ajax_plm_toggle_favorite', 'plm_toggle_favorite');
+add_action('wp_ajax_nopriv_plm_toggle_favorite', function() {
+    wp_send_json_error('login_required');
+});
+/**
+ * Toggle Like
+ */
+function plm_toggle_like() {
+    if (!is_user_logged_in()) {
+        wp_send_json_error('login_required');
+    }
+
+    global $wpdb;
+    $table = $wpdb->prefix . 'plm_user_actions';
+    $user_id = get_current_user_id();
+    $book_id = intval($_POST['book_id']);
+
+    // Check if already liked
+    $exists = $wpdb->get_var($wpdb->prepare(
+        "SELECT id FROM $table WHERE user_id = %d AND book_id = %d AND action_type = 'like'",
+        $user_id, $book_id
+    ));
+
+    if ($exists) {
+        $wpdb->delete($table, ['id' => $exists]);
+        wp_send_json_success('removed');
+    } else {
+        $wpdb->insert($table, [
+            'user_id' => $user_id,
+            'book_id' => $book_id,
+            'action_type' => 'like'
+        ]);
+        wp_send_json_success('added');
+    }
+}
+add_action('wp_ajax_plm_toggle_like', 'plm_toggle_like');
+add_action('wp_ajax_nopriv_plm_toggle_like', function() {
+    wp_send_json_error('login_required');
+});
