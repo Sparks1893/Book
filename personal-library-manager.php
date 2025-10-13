@@ -27,3 +27,9 @@ require_once plugin_dir_path(__FILE__) . 'includes/book-meta.php';
 require_once plugin_dir_path(__FILE__) . 'includes/library-display.php';
 
 echo '<button class="plm-btn-wishlist" data-book="'.get_the_ID().'">♡ Wishlist</button>';
+
+function plm_enqueue_scripts() {
+    wp_enqueue_script('plm-user-actions', plugin_dir_url(__FILE__).'assets/js/user-actions.js', ['jquery'], '1.0', true);
+    wp_localize_script('plm-user-actions', 'plm_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
+}
+add_action('wp_enqueue_scripts', 'plm_enqueue_scripts');
