@@ -33,3 +33,4 @@ function plm_enqueue_scripts() {
     wp_localize_script('plm-user-actions', 'plm_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
 }
 add_action('wp_enqueue_scripts', 'plm_enqueue_scripts');
+require_once plugin_dir_path(__FILE__) . 'includes/user-actions.php';
