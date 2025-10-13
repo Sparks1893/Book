@@ -110,3 +110,38 @@ function plm_create_user_actions_table() {
     dbDelta($sql);
 }
 register_activation_hook(__FILE__, 'plm_create_user_actions_table');
+/**
+ * Toggle Wishlist
+ */
+function plm_toggle_wishlist() {
+    if (!is_user_logged_in()) {
+        wp_send_json_error('login_required');
+    }
+
+    global $wpdb;
+    $table = $wpdb->prefix . 'plm_user_actions';
+    $user_id = get_current_user_id();
+    $book_id = intval($_POST['book_id']);
+
+    // Check if already in wishlist
+    $exists = $wpdb->get_var($wpdb->prepare(
+        "SELECT id FROM $table WHERE user_id = %d AND book_id = %d AND action_type = 'wishlist'",
+        $user_id, $book_id
+    ));
+
+    if ($exists) {
+        $wpdb->delete($table, ['id' => $exists]);
+        wp_send_json_success('removed');
+    } else {
+        $wpdb->insert($table, [
+            'user_id' => $user_id,
+            'book_id' => $book_id,
+            'action_type' => 'wishlist'
+        ]);
+        wp_send_json_success('added');
+    }
+}
+add_action('wp_ajax_plm_toggle_wishlist', 'plm_toggle_wishlist');
+add_action('wp_ajax_nopriv_plm_toggle_wishlist', function() {
+    wp_send_json_error('login_required');
+});
