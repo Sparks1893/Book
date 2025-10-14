@@ -59,3 +59,9 @@ function plm_enqueue_scripts() {
     ]);
 }
 add_action('wp_enqueue_scripts', 'plm_enqueue_scripts');
+
+function plm_enqueue_styles() {
+    wp_enqueue_style('plm-toast', PERSONAL_LIBRARY_URL . 'assets/css/toast.css');
+}
+add_action('wp_enqueue_scripts', 'plm_enqueue_styles');
+
