@@ -43,3 +43,19 @@ function plm_enqueue_scripts() {
     ]);
 }
 add_action('wp_enqueue_scripts', 'plm_enqueue_scripts');
+
+function plm_enqueue_scripts() {
+    // Existing scripts...
+
+    // ✅ Add the toast script
+    wp_enqueue_script('plm-toast', PERSONAL_LIBRARY_URL . 'assets/js/toast.js', [], '1.0', true);
+
+    // ✅ User actions script after toast
+    wp_enqueue_script('plm-user-actions', PERSONAL_LIBRARY_URL . 'assets/js/user-actions.js', ['plm-toast'], '1.0', true);
+
+    wp_localize_script('plm-user-actions', 'plm_ajax', [
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce'    => wp_create_nonce('personal_library_nonce')
+    ]);
+}
+add_action('wp_enqueue_scripts', 'plm_enqueue_scripts');
