@@ -1,0 +1,1 @@
+wp_enqueue_style('bookhive-style', plugin_dir_url(__FILE__) . 'assets/css/bookhive-style.css', [], '1.0.0');
