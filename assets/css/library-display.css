@@ -1,0 +1,275 @@
+/**
+ * Bookshive Library Display Styles
+ * Handles grid, list, shelf, and wall views
+ */
+
+:root {
+  --primary: #4b6cb7;
+  --primary-light: #8ab6f9;
+  --accent: #e8b923;
+  --bg: #f5f7fa;
+  --text: #222;
+  --text-light: #555;
+  --border: #ddd;
+  --radius: 10px;
+}
+
+body.bookshive-active {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Poppins", "Segoe UI", sans-serif;
+}
+
+#bookshive-library-container {
+  max-width: 1200px;
+  margin: 30px auto;
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+}
+
+/* Header */
+.bookshive-library-header {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.bookshive-library-header h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin: 0;
+  text-align: center;
+}
+
+/* Filters and View Toggles */
+.bookshive-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.bookshive-filters select {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.bookshive-view-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bookshive-view-toggle .view-btn {
+  border: none;
+  background: #eee;
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 1.1rem;
+}
+
+.bookshive-view-toggle .view-btn:hover {
+  background: var(--primary-light);
+  color: #fff;
+}
+
+.bookshive-view-toggle .view-btn.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* Content Area */
+#bookshive-library-content {
+  margin-top: 20px;
+  display: grid;
+  gap: 20px;
+}
+
+.bookshive-loading,
+.bookshive-empty,
+.bookshive-error {
+  text-align: center;
+  color: var(--text-light);
+  font-size: 1rem;
+  padding: 20px;
+}
+
+/* === Grid View === */
+.view-grid {
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+.view-grid .bookshive-book-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.view-grid .bookshive-book-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.view-grid .book-cover img,
+.view-grid .placeholder-cover {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  background: #f0f0f0;
+}
+
+.book-info {
+  padding: 10px 12px;
+  flex-grow: 1;
+}
+
+.book-title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.book-author,
+.book-genre {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin: 2px 0;
+}
+
+.book-status {
+  margin-top: 6px;
+}
+
+.status-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: #fff;
+  text-transform: capitalize;
+}
+
+.status-unread {
+  background: #999;
+}
+.status-reading {
+  background: var(--primary);
+}
+.status-paused {
+  background: #e8b923;
+}
+.status-dnf {
+  background: #d9534f;
+}
+.status-finished {
+  background: #5cb85c;
+}
+
+/* Ratings */
+.book-ratings {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+  font-size: 0.85rem;
+}
+
+.book-ratings .stars {
+  color: #f5a623;
+}
+
+.book-ratings .spice {
+  color: #d84315;
+  font-weight: 500;
+}
+
+/* === List View === */
+.view-list {
+  display: block;
+}
+
+.view-list .bookshive-book-item {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.view-list .book-cover img {
+  width: 100px;
+  height: 140px;
+  border-radius: var(--radius);
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.view-list .book-info {
+  flex: 1;
+}
+
+/* === Shelf View === */
+.view-shelf {
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  background: #f7f3e9;
+  border-top: 5px solid #b8860b;
+  padding-top: 15px;
+  position: relative;
+}
+
+.view-shelf .bookshive-book-item {
+  background: #fffdf5;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+  border-radius: 3px;
+  border: 1px solid #d3c4a3;
+}
+
+.view-shelf::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 8px;
+  width: 100%;
+  background: #b8860b;
+}
+
+/* === Wall View === */
+.view-wall {
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  background: #f0f0f0;
+  padding: 10px;
+}
+
+.view-wall .bookshive-book-item {
+  border-radius: 0;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .bookshive-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .bookshive-view-toggle {
+    justify-content: center;
+  }
+}
