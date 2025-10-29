@@ -1,0 +1,106 @@
+/**
+ * Bookshive Achievements Styles
+ * Author: E. Durant
+ * Description: Styles for achievements and badges system.
+ */
+
+.bookshive-achievements {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  text-align: center;
+}
+
+.bookshive-achievements h3 {
+  font-size: 2rem;
+  color: #222;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  border-bottom: 2px solid #c79c60;
+  display: inline-block;
+  padding-bottom: 0.3rem;
+}
+
+/* Badge Grid */
+.bookshive-achievements .achievement {
+  display: inline-block;
+  width: 160px;
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background: #f9f9f9;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.bookshive-achievements .achievement .icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.4rem;
+  transition: transform 0.3s ease;
+}
+
+.bookshive-achievements .achievement strong {
+  display: block;
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+
+.bookshive-achievements .achievement p {
+  font-size: 0.85rem;
+  color: #777;
+  margin: 0;
+}
+
+/* Hover & Animation */
+.bookshive-achievements .achievement:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
+}
+
+.bookshive-achievements .achievement:hover .icon {
+  transform: scale(1.15);
+}
+
+/* Earned Badges */
+.bookshive-achievements .achievement.earned {
+  background: linear-gradient(145deg, #fff8e1, #ffedc2);
+  border: 1px solid #c79c60;
+  box-shadow: 0 0 12px rgba(199, 156, 96, 0.4);
+}
+
+.bookshive-achievements .achievement.earned .icon {
+  color: #c79c60;
+  animation: badgeGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes badgeGlow {
+  0% { text-shadow: 0 0 2px #c79c60; }
+  100% { text-shadow: 0 0 12px #e0b973; }
+}
+
+/* Locked Badges */
+.bookshive-achievements .achievement.locked {
+  background: #f1f1f1;
+  filter: grayscale(100%);
+  opacity: 0.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .bookshive-achievements .achievement {
+    width: 120px;
+    padding: 0.8rem;
+  }
+
+  .bookshive-achievements .achievement .icon {
+    font-size: 1.6rem;
+  }
+}
