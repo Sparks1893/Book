@@ -1,99 +1,158 @@
 /**
- * Bookshive Shop Interactivity
+ * Bookshive Indie Shop JS
+ * Handles: Marketplace filtering + Author Dashboard actions
  * Author: E. Durant
- * Description: Adds animations, wishlist handling, and modal previews for the Bookshive shop.
  */
 
 (function ($) {
   'use strict';
 
-  const Shop = {
-    init: function () {
-      this.bindUI();
+  const BookshiveShop = {
+    init() {
+      this.marketplaceFilters();
+      this.authorDashboard();
     },
 
-    bindUI: function () {
-      // Hover card animation (already has CSS, but add touch support)
-      $('.bookshive-product-card')
-        .on('touchstart', function () {
-          $(this).addClass('hover');
-        })
-        .on('touchend', function () {
-          $(this).removeClass('hover');
-        });
+    /* ===============================
+       MARKETPLACE
+       =============================== */
+    marketplaceFilters() {
+      const searchInput = $('#shop-search');
+      const genreFilter = $('#shop-genre-filter');
 
-      // Wishlist button click
-      $(document).on('click', '.wishlist-btn', this.handleWishlist);
-
-      // Optional Quick View Modal
-      $(document).on('click', '.quick-view-btn', this.handleQuickView);
+      // Trigger filter on typing or genre change
+      searchInput.on('keyup', () => this.filterBooks());
+      genreFilter.on('change', () => this.filterBooks());
     },
 
-    /**
-     * Handles adding or removing a book from wishlist
-     */
-    handleWishlist: function (e) {
-      e.preventDefault();
-      const $btn = $(this);
-      const bookId = $btn.closest('.bookshive-product-card').data('book-id');
+    filterBooks() {
+      const query = $('#shop-search').val().toLowerCase();
+      const genre = $('#shop-genre-filter').val();
 
-      $btn.prop('disabled', true).text('Saving...');
+      $('.book-card').each(function () {
+        const title = $(this).find('h4').text().toLowerCase();
+        const author = $(this).find('.author').text().toLowerCase();
+        const bookGenre = $(this).data('genre') || '';
 
-      $.post(bookshiveAjax.ajax_url, {
-        action: 'bookshive_toggle_wishlist',
-        nonce: bookshiveAjax.nonce,
-        book_id: bookId,
-      })
-        .done((response) => {
-          if (response.success) {
-            const newState = response.data.added ? 'Added 💖' : 'Removed 💔';
-            $btn.text(newState).toggleClass('active', response.data.added);
-          } else {
-            $btn.text('Error ❌');
-          }
-        })
-        .fail(() => {
-          $btn.text('Error ❌');
-        })
-        .always(() => {
-          setTimeout(() => {
-            $btn.prop('disabled', false).text('Wishlist');
-          }, 2000);
-        });
+        const match =
+          (title.includes(query) || author.includes(query)) &&
+          (!genre || genre === bookGenre);
+
+        $(this).toggle(match);
+      });
     },
 
-    /**
-     * Opens a modal for quick book preview
-     */
-    handleQuickView: function (e) {
-      e.preventDefault();
-      const bookId = $(this).closest('.bookshive-product-card').data('book-id');
+    /* ===============================
+       AUTHOR DASHBOARD
+       =============================== */
+    authorDashboard() {
+      const form = $('#add-indie-book-form');
 
-      const $modal = $('#bookshive-quickview-modal');
-      $modal.addClass('open').find('.content').html('<p>Loading book details...</p>');
+      if (!form.length) return;
 
-      $.post(bookshiveAjax.ajax_url, {
-        action: 'bookshive_get_book_preview',
-        nonce: bookshiveAjax.nonce,
-        book_id: bookId,
-      })
-        .done((response) => {
-          if (response.success) {
-            $modal.find('.content').html(response.data.html);
-          } else {
-            $modal.find('.content').html('<p>Unable to load details.</p>');
-          }
+      form.on('submit', (e) => {
+        e.preventDefault();
+        const data = form.serialize() + '&action=bookshive_add_indie_book';
+
+        $.ajax({
+          url: bookshiveAjax.ajax_url,
+          method: 'POST',
+          data,
+          beforeSend: () => this.showNotice('Saving your book...', 'info'),
+          success: (response) => {
+            if (response.success) {
+              this.showNotice('✅ Book added successfully!', 'success');
+              form[0].reset();
+              this.refreshBookTable(response.data.books);
+            } else {
+              this.showNotice('❌ Failed to add book: ' + response.data, 'error');
+            }
+          },
+          error: () => this.showNotice('⚠️ Network error, please try again.', 'error'),
         });
+      });
+
+      // Delete buttons
+      $(document).on('click', '.delete-book', (e) => {
+        e.preventDefault();
+        const id = $(e.currentTarget).data('id');
+
+        if (!confirm('Are you sure you want to delete this book?')) return;
+
+        $.ajax({
+          url: bookshiveAjax.ajax_url,
+          method: 'POST',
+          data: { action: 'bookshive_delete_indie_book', id },
+          success: (response) => {
+            if (response.success) {
+              this.showNotice('🗑️ Book deleted.', 'success');
+              $(`button[data-id="${id}"]`).closest('tr').fadeOut(400, function () {
+                $(this).remove();
+              });
+            } else {
+              this.showNotice('❌ Could not delete book.', 'error');
+            }
+          },
+        });
+      });
+    },
+
+    /* ===============================
+       HELPERS
+       =============================== */
+    refreshBookTable(books) {
+      const tbody = $('.author-book-list tbody');
+      tbody.empty();
+
+      if (!books.length) {
+        tbody.append('<tr><td colspan="4">No books listed yet.</td></tr>');
+        return;
+      }
+
+      books.forEach((book) => {
+        const row = `
+          <tr>
+            <td>${book.title}</td>
+            <td>${book.genre}</td>
+            <td>£${book.price}</td>
+            <td>
+              <button class="button-secondary edit-book" data-id="${book.id}">Edit</button>
+              <button class="button delete-book" data-id="${book.id}">Delete</button>
+            </td>
+          </tr>`;
+        tbody.append(row);
+      });
+    },
+
+    showNotice(message, type = 'info') {
+      let color = '#684ac2';
+      if (type === 'success') color = '#28a745';
+      if (type === 'error') color = '#dc3545';
+      if (type === 'info') color = '#007bff';
+
+      const notice = $(`
+        <div class="bookshive-notice ${type}" 
+             style="
+                position:fixed;
+                top:20px;right:20px;
+                background:${color};
+                color:#fff;
+                padding:12px 18px;
+                border-radius:8px;
+                box-shadow:0 2px 10px rgba(0,0,0,0.1);
+                z-index:9999;">
+          ${message}
+        </div>
+      `)
+        .appendTo('body')
+        .hide()
+        .fadeIn(300);
+
+      setTimeout(() => {
+        notice.fadeOut(400, () => notice.remove());
+      }, 3000);
     },
   };
 
-  $(document).ready(() => Shop.init());
-
-  /**
-   * Simple modal close handler
-   */
-  $(document).on('click', '#bookshive-quickview-modal .close', function () {
-    $('#bookshive-quickview-modal').removeClass('open');
-  });
-
+  $(document).ready(() => BookshiveShop.init());
 })(jQuery);
