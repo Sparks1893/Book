@@ -1,121 +1,111 @@
 /**
- * Handles the front-end display of the user's Bookshive library.
- * Dynamically filters, sorts, and changes layout views via AJAX.
+ * Bookshive Library Display JS
+ * Author: E. Durant
+ * Handles user filters, layouts, and reading status updates.
  */
 
-jQuery(document).ready(function ($) {
-  const $container = $("#bookshive-library-container");
-  const userId = $container.data("user");
-  const $content = $("#bookshive-library-content");
+(function($) {
+  'use strict';
 
-  // === Restore preferred layout ===
-  let savedView = localStorage.getItem("bookshive_view") || "grid";
-  setView(savedView);
+  const $library = $('#bookshive-library');
+  const $container = $('#bookshive-books-container');
+  const $filterForm = $('#bookshive-filter-form');
 
-  // === Initial load ===
-  fetchBooks();
+  /**
+   * Handle book filtering (genre, author, rating, spice)
+   */
+  $filterForm.on('submit', function(e) {
+    e.preventDefault();
 
-  // === Event Listeners ===
-  $("#filter-genre, #filter-author, #filter-rating, #filter-status, #sort-books").on(
-    "change",
-    fetchBooks
-  );
-
-  $(".bookshive-view-toggle .view-btn").on("click", function () {
-    const view = $(this).data("view");
-    $(".bookshive-view-toggle .view-btn").removeClass("active");
-    $(this).addClass("active");
-    setView(view);
-    localStorage.setItem("bookshive_view", view);
-  });
-
-  // === Functions ===
-  function fetchBooks() {
-    $content.html('<p class="bookshive-loading">📖 Fetching your books...</p>');
-
-    const filters = {
-      action: "bookshive_fetch_books",
-      nonce: bookshive_ajax.nonce,
-      user_id: userId,
-      genre: $("#filter-genre").val(),
-      author: $("#filter-author").val(),
-      rating: $("#filter-rating").val(),
-      status: $("#filter-status").val(),
-      sort: $("#sort-books").val(),
+    const data = {
+      action: 'bookshive_filter_books',
+      nonce: bookshiveAjax.nonce,
+      genre: $('#bookshive-filter-genre').val(),
+      author: $('#bookshive-filter-author').val(),
+      rating: $('#bookshive-filter-rating').val(),
+      spice: $('#bookshive-filter-spice').val()
     };
 
-    $.post(bookshive_ajax.ajax_url, filters, function (response) {
+    $container.addClass('loading');
+    $.post(bookshiveAjax.ajax_url, data, function(response) {
+      $container.removeClass('loading');
       if (response.success) {
-        renderBooks(response.data.books);
+        $container.html(response.data.html);
       } else {
-        $content.html("<p class='bookshive-error'>⚠️ Unable to load books.</p>");
+        $container.html('<p class="bookshive-empty">No matching books found.</p>');
       }
     });
-  }
+  });
 
-  function renderBooks(books) {
-    if (!books.length) {
-      $content.html("<p class='bookshive-empty'>No books match your filters.</p>");
-      return;
+  /**
+   * Handle layout toggle buttons
+   */
+  $('.bookshive-view-toggle button').on('click', function() {
+    $('.bookshive-view-toggle button').removeClass('active');
+    $(this).addClass('active');
+    const layout = $(this).data('layout');
+    $library.attr('data-layout', layout);
+
+    if (layout === 'list') {
+      $library.addClass('layout-list').removeClass('layout-grid layout-shelf');
+    } else if (layout === 'shelf') {
+      $library.addClass('layout-shelf').removeClass('layout-grid layout-list');
+    } else {
+      $library.addClass('layout-grid').removeClass('layout-list layout-shelf');
     }
+  });
 
-    const currentView = localStorage.getItem("bookshive_view") || "grid";
-    $content.removeClass().addClass(`view-${currentView}`);
+  /**
+   * Handle status change buttons (Reading, Paused, DNF, Completed)
+   */
+  $(document).on('click', '.book-action', function() {
+    const $btn = $(this);
+    const $card = $btn.closest('.bookshive-book-card');
+    const bookId = $card.data('book-id');
+    const status = $btn.data('status');
 
-    let html = "";
+    const reason =
+      status === 'paused' || status === 'did_not_finish'
+        ? prompt('Would you like to add a reason? (optional)', '')
+        : '';
 
-    books.forEach((book) => {
-      html += `
-        <div class="bookshive-book-item" data-status="${book.status}">
-          <div class="book-cover">
-            ${
-              book.thumb
-                ? `<img src="${book.thumb}" alt="${book.title} cover">`
-                : `<div class="placeholder-cover">📘</div>`
-            }
-          </div>
-          <div class="book-info">
-            <h3 class="book-title">${book.title}</h3>
-            <p class="book-author">by ${book.author || "Unknown"}</p>
-            <p class="book-genre">${book.genre || "—"}</p>
-            <p class="book-status">
-              <span class="status-tag status-${book.status}">
-                ${statusLabel(book.status)}
-              </span>
-            </p>
-            <div class="book-ratings">
-              <span class="stars">${"★".repeat(book.rating || 0)}${"☆".repeat(
-        5 - (book.rating || 0)
-      )}</span>
-              <span class="spice">🔥 ${book.spice || 0}</span>
-            </div>
-          </div>
-        </div>`;
+    const data = {
+      action: 'bookshive_update_reading_status',
+      nonce: bookshiveAjax.nonce,
+      book_id: bookId,
+      status: status,
+      reason: reason
+    };
+
+    $btn.prop('disabled', true);
+
+    $.post(bookshiveAjax.ajax_url, data, function(response) {
+      $btn.prop('disabled', false);
+
+      if (response.success) {
+        $card.find('.status')
+          .attr('class', `status status-${status}`)
+          .text(status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()));
+
+        if (reason && (status === 'paused' || status === 'did_not_finish')) {
+          $card.find('.status').attr('title', 'Reason: ' + reason);
+        }
+
+        $card.addClass('updated');
+        setTimeout(() => $card.removeClass('updated'), 1500);
+      } else {
+        alert(response.data || 'Error updating status.');
+      }
     });
+  });
 
-    $content.hide().html(html).fadeIn(300);
-  }
+  /**
+   * Optional visual enhancement: hover glow
+   */
+  $(document).on('mouseenter', '.bookshive-book-card', function() {
+    $(this).css('box-shadow', '0 4px 12px rgba(0,0,0,0.15)');
+  }).on('mouseleave', '.bookshive-book-card', function() {
+    $(this).css('box-shadow', '');
+  });
 
-  function setView(view) {
-    $content.removeClass().addClass(`view-${view}`);
-    localStorage.setItem("bookshive_view", view);
-  }
-
-  function statusLabel(status) {
-    switch (status) {
-      case "unread":
-        return "Unread";
-      case "reading":
-        return "Reading";
-      case "paused":
-        return "Paused";
-      case "dnf":
-        return "Did Not Finish";
-      case "finished":
-        return "Finished";
-      default:
-        return "Unknown";
-    }
-  }
-});
-
+})(jQuery);
