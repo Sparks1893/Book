@@ -1,0 +1,194 @@
+/* ==========================================================
+   Bookshive Dashboard Stylesheet
+   Author: E. Durant
+   Description: Admin and Analytics UI Styling
+   ========================================================== */
+
+/* ---------- GENERAL LAYOUT ---------- */
+.bookshive-dashboard {
+  font-family: 'Inter', system-ui, sans-serif;
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 0 20px 60px;
+}
+
+.bookshive-dashboard h1,
+.bookshive-dashboard h2 {
+  color: #3d2d77;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* ---------- CARD COMPONENTS ---------- */
+.dashboard-card {
+  background: linear-gradient(145deg, #ffffff, #f2f0ff);
+  border: 1px solid #e1ddf8;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-card h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #4b38a1;
+  margin-bottom: 10px;
+}
+
+.dashboard-card p {
+  color: #555;
+  font-size: 0.95rem;
+}
+
+/* ---------- STATS BOXES ---------- */
+.stats-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  margin-bottom: 15px;
+}
+
+.stats-box .icon {
+  font-size: 1.8rem;
+  color: #684ac2;
+  margin-right: 12px;
+}
+
+.stats-box .info {
+  flex: 1;
+}
+
+.stats-box .info h4 {
+  font-size: 1rem;
+  margin: 0;
+  color: #333;
+}
+
+.stats-box .info span {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #3d2d77;
+}
+
+/* ---------- PROGRESS BARS ---------- */
+.progress {
+  background-color: #ece9f8;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 12px;
+  margin-top: 8px;
+}
+
+.progress-bar {
+  height: 12px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #684ac2, #9f7aea);
+  transition: width 0.4s ease;
+}
+
+/* ---------- CHART AREA ---------- */
+.chart-container {
+  background: #fff;
+  border-radius: 14px;
+  padding: 25px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+  margin-top: 30px;
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: 300px !important;
+}
+
+/* ---------- BADGES & ACHIEVEMENTS ---------- */
+.badge-collection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.badge-item {
+  text-align: center;
+  width: 120px;
+}
+
+.badge-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #f6f4ff;
+  border: 2px solid #d5ccff;
+  transition: transform 0.3s ease;
+}
+
+.badge-item img:hover {
+  transform: scale(1.1);
+}
+
+.badge-item span {
+  display: block;
+  font-size: 0.85rem;
+  margin-top: 6px;
+  color: #4b38a1;
+}
+
+/* ---------- ADMIN TABLE ---------- */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 25px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.admin-table th, .admin-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.admin-table th {
+  background: #f4f1ff;
+  color: #3d2d77;
+  font-weight: 600;
+}
+
+.admin-table tr:hover {
+  background-color: #faf9ff;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-box {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .stats-box .icon {
+    margin-bottom: 10px;
+  }
+}
