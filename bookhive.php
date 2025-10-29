@@ -49,3 +49,27 @@ class Bookhive {
 }
 
 new Bookhive();
+
+// Enqueue achievements JS with badge data
+add_action('wp_enqueue_scripts', function () {
+    wp_enqueue_script(
+        'bookshive-achievements',
+        PERSONAL_LIBRARY_URL . 'assets/js/achievements.js',
+        ['jquery'],
+        PERSONAL_LIBRARY_VERSION,
+        true
+    );
+
+    $user_id = get_current_user_id();
+    $new_badge = $user_id ? get_transient('bookshive_new_badge_' . $user_id) : false;
+
+    wp_localize_script('bookshive-achievements', 'bookshiveBadgeData', [
+        'has_new' => (bool)$new_badge,
+        'badge'   => $new_badge ?: [],
+    ]);
+
+    // Remove transient once displayed
+    if ($new_badge) {
+        delete_transient('bookshive_new_badge_' . $user_id);
+    }
+});
