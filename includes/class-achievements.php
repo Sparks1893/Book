@@ -193,3 +193,29 @@ class Bookshive_Achievements {
 }
 
 Bookshive_Achievements::init();
+
+public static function award_badge($user_id, $badge_key) {
+    $badges = get_user_meta($user_id, '_bookshive_achievements', true) ?: [];
+
+    if (!in_array($badge_key, $badges, true)) {
+        $badges[] = $badge_key;
+        update_user_meta($user_id, '_bookshive_achievements', $badges);
+
+        // Badge details for JS popup
+        self::register_badges();
+        $badge = self::$badges[$badge_key] ?? null;
+
+        if ($badge) {
+            // Pass badge details to JS via transient for current user session
+            set_transient('bookshive_new_badge_' . $user_id, [
+                'title' => $badge['title'],
+                'icon'  => $badge['icon']
+            ], 60);
+        }
+
+        // Optional: allow other plugins or logs
+        do_action('bookshive_badge_awarded', $user_id, $badge_key);
+
+        error_log("User {$user_id} earned badge: {$badge_key}");
+    }
+}
