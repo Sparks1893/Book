@@ -1,0 +1,177 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Bookshive 1.0\n"
+"Report-Msgid-Bugs-To: https://bookshive.com/support\n"
+"POT-Creation-Date: 2025-10-29 12:00+0000\n"
+"PO-Revision-Date: 2025-10-29 12:00+0000\n"
+"Last-Translator: E. Durant <support@bookshive.com>\n"
+"Language-Team: Bookshive Dev Team\n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Bookshive Builder 2.0\n"
+
+#: bookshive.php:12
+msgid "Personal Library Manager"
+msgstr "Personal Library Manager"
+
+#: includes/class-library-display.php:45
+msgid "Filter by Genre"
+msgstr "Filter by Genre"
+
+#: includes/class-library-display.php:46
+msgid "Filter by Author"
+msgstr "Filter by Author"
+
+#: includes/class-library-display.php:47
+msgid "Filter by Rating"
+msgstr "Filter by Rating"
+
+#: includes/class-library-display.php:48
+msgid "Filter by Status"
+msgstr "Filter by Status"
+
+#: includes/class-user-library.php:120
+msgid "Mark as Finished"
+msgstr "Mark as Finished"
+
+#: includes/class-user-library.php:121
+msgid "Mark as Paused"
+msgstr "Mark as Paused"
+
+#: includes/class-user-library.php:122
+msgid "Mark as DNF"
+msgstr "Mark as DNF"
+
+#: includes/class-user-library.php:210
+msgid "Reason for Pausing"
+msgstr "Reason for Pausing"
+
+#: includes/class-user-library.php:211
+msgid "Reason for Not Finishing"
+msgstr "Reason for Not Finishing"
+
+#: includes/class-reading-status.php:50
+msgid "Reading Progress"
+msgstr "Reading Progress"
+
+#: includes/class-reading-status.php:51
+msgid "Books Completed"
+msgstr "Books Completed"
+
+#: includes/class-reading-status.php:52
+msgid "Books in Progress"
+msgstr "Books in Progress"
+
+#: includes/class-reading-status.php:53
+msgid "Books Paused"
+msgstr "Books Paused"
+
+#: includes/class-reading-status.php:54
+msgid "Books DNF"
+msgstr "Books DNF"
+
+#: includes/class-shop-system.php:30
+msgid "Buy Now"
+msgstr "Buy Now"
+
+#: includes/class-shop-system.php:31
+msgid "Add to Wishlist"
+msgstr "Add to Wishlist"
+
+#: includes/class-shop-system.php:32
+msgid "More by this Author"
+msgstr "More by this Author"
+
+#: templates/user-library-display.php:60
+msgid "Your Library"
+msgstr "Your Library"
+
+#: templates/user-library-display.php:70
+msgid "No books found."
+msgstr "No books found."
+
+#: templates/shop-marketplace.php:42
+msgid "Indie Marketplace"
+msgstr "Indie Marketplace"
+
+#: templates/shop-marketplace.php:43
+msgid "Discover books by independent authors"
+msgstr "Discover books by independent authors"
+
+#: templates/shop-author-dashboard.php:28
+msgid "Author Dashboard"
+msgstr "Author Dashboard"
+
+#: templates/shop-author-dashboard.php:40
+msgid "Upload New Book"
+msgstr "Upload New Book"
+
+#: templates/shop-product-page.php:25
+msgid "About the Book"
+msgstr "About the Book"
+
+#: templates/shop-product-page.php:60
+msgid "Related Books"
+msgstr "Related Books"
+
+#: includes/class-book-recommendations.php:90
+msgid "Recommended For You"
+msgstr "Recommended For You"
+
+#: includes/class-book-recommendations.php:91
+msgid "Because you liked"
+msgstr "Because you liked"
+
+#: includes/class-release-calendar.php:30
+msgid "Upcoming Releases"
+msgstr "Upcoming Releases"
+
+#: includes/class-release-calendar.php:31
+msgid "Add Indie Author Event"
+msgstr "Add Indie Author Event"
+
+#: includes/class-achievements.php:120
+msgid "New Achievement Unlocked!"
+msgstr "New Achievement Unlocked!"
+
+#: includes/class-achievements.php:121
+msgid "View Achievements"
+msgstr "View Achievements"
+
+#: assets/js/dashboard.js
+msgid "Books Read"
+msgstr "Books Read"
+
+#: assets/js/dashboard.js
+msgid "Reading Goal"
+msgstr "Reading Goal"
+
+#: assets/js/dashboard.js
+msgid "Achievements"
+msgstr "Achievements"
+
+#: assets/js/library-display.js
+msgid "Loading Books..."
+msgstr "Loading Books..."
+
+#: assets/js/library-display.js
+msgid "No results found"
+msgstr "No results found"
+
+#: assets/js/recommendations.js
+msgid "Fetching Recommendations..."
+msgstr "Fetching Recommendations..."
+
+#: assets/js/recommendations.js
+msgid "Similar Titles"
+msgstr "Similar Titles"
+
+#: assets/js/shop.js
+msgid "Added to Wishlist!"
+msgstr "Added to Wishlist!"
+
+#: assets/js/shop.js
+msgid "Item Purchased!"
+msgstr "Item Purchased!"
