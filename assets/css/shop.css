@@ -1,165 +1,207 @@
-/**
- * Bookshive Shop Styles
- * Author: E. Durant
- * Description: Styles for marketplace and author shop views.
- */
+/* ==========================================================
+   Bookshive Shop Stylesheet
+   Author: E. Durant
+   Description: Styling for the Indie Author Marketplace
+                and Author Dashboard
+   ========================================================== */
 
-.bookshive-shop-container,
-.bookshive-author-shop {
+/* ---------- GENERAL LAYOUT ---------- */
+.bookshive-shop-marketplace,
+.bookshive-author-dashboard {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #333;
+  margin: 40px auto;
   max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+  padding: 0 20px;
 }
 
-.bookshive-shop-container h2,
-.bookshive-author-shop h2 {
+/* Section Titles */
+.bookshive-shop-marketplace h2,
+.bookshive-author-dashboard h2 {
   text-align: center;
   font-size: 2rem;
-  color: #2a2a2a;
-  margin-bottom: 2rem;
-  font-weight: 600;
-  position: relative;
+  color: #3d2d77;
+  margin-bottom: 1.5em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.bookshive-grid {
+/* ---------- SHOP FILTER BAR ---------- */
+.shop-filters {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.shop-filters input[type="text"],
+.shop-filters select {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border-color .2s ease;
+}
+
+.shop-filters input:focus,
+.shop-filters select:focus {
+  border-color: #684ac2;
+  outline: none;
+}
+
+/* ---------- BOOK GRID ---------- */
+.book-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
+  gap: 24px;
 }
 
-/* --- Product Card --- */
-.bookshive-product-card {
+.book-card {
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.bookshive-product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
-}
-
-/* --- Book Cover --- */
-.bookshive-product-card .book-cover {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  height: 300px;
-  background: #f5f5f5;
-}
-
-.bookshive-product-card .book-cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
-
-.bookshive-product-card:hover .book-cover img {
-  transform: scale(1.05);
-}
-
-/* --- Info Section --- */
-.bookshive-product-card .book-info {
-  padding: 1rem;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  text-align: center;
 }
 
-.bookshive-product-card .book-title {
+.book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.book-card img {
+  width: 160px;
+  height: 230px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.book-card h4 {
   font-size: 1.1rem;
   font-weight: 600;
   color: #222;
-  margin-bottom: 0.4rem;
+  margin-bottom: 6px;
 }
 
-.bookshive-product-card .book-author {
+.book-card .author {
   color: #777;
-  font-size: 0.9rem;
-  margin-bottom: 0.8rem;
-}
-
-.bookshive-product-card .book-price {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #c79c60;
-  margin-bottom: 1rem;
-}
-
-.bookshive-product-card .book-price-free {
-  color: #28a745;
-}
-
-/* --- Buttons --- */
-.bookshive-product-card .book-btn {
-  display: inline-block;
-  text-align: center;
-  padding: 0.6rem 1rem;
-  border-radius: 6px;
-  text-decoration: none;
-  transition: all 0.25s ease;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.bookshive-product-card .buy-btn {
-  background-color: #c79c60;
-  color: #fff;
-}
-
-.bookshive-product-card .buy-btn:hover {
-  background-color: #a97e45;
-}
-
-.bookshive-product-card .view-btn {
-  background-color: #f3f3f3;
-  color: #333;
-}
-
-.bookshive-product-card .view-btn:hover {
-  background-color: #e1e1e1;
-}
-
-/* --- Pagination --- */
-.bookshive-pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
   font-size: 0.95rem;
+  margin-bottom: 10px;
 }
 
-.bookshive-pagination a,
-.bookshive-pagination span {
-  margin: 0 4px;
-  padding: 0.5rem 0.8rem;
-  border-radius: 6px;
-  color: #333;
+.book-card .price {
+  color: #5036a3;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+/* Buy Now Button */
+.book-card .button.buy-now {
+  background-color: #684ac2;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
   text-decoration: none;
+  font-size: 0.95rem;
+  transition: background-color .25s ease;
 }
 
-.bookshive-pagination a:hover {
-  background: #c79c60;
+.book-card .button.buy-now:hover {
+  background-color: #4b38a1;
+}
+
+/* ---------- AUTHOR DASHBOARD ---------- */
+.bookshive-author-dashboard form.add-book-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 40px;
+  background: #faf8ff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+}
+
+.bookshive-author-dashboard input,
+.bookshive-author-dashboard textarea,
+.bookshive-author-dashboard button {
+  font-size: 1rem;
+  border-radius: 8px;
+}
+
+.bookshive-author-dashboard input,
+.bookshive-author-dashboard textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.bookshive-author-dashboard input:focus,
+.bookshive-author-dashboard textarea:focus {
+  border-color: #684ac2;
+  outline: none;
+}
+
+.bookshive-author-dashboard button.button-primary {
+  background-color: #684ac2;
   color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color .25s ease;
 }
 
-.bookshive-pagination .current {
-  background: #c79c60;
-  color: #fff;
+.bookshive-author-dashboard button.button-primary:hover {
+  background-color: #4b38a1;
 }
 
-/* --- Responsive --- */
+/* Table Styling */
+.bookshive-author-dashboard table.wp-list-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.bookshive-author-dashboard table th,
+.bookshive-author-dashboard table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.bookshive-author-dashboard table th {
+  background: #f4f1ff;
+  color: #3d2d77;
+  font-weight: 600;
+}
+
+.bookshive-author-dashboard table tr:hover {
+  background-color: #f9f8ff;
+}
+
+/* ---------- RESPONSIVE ---------- */
 @media (max-width: 768px) {
-  .bookshive-product-card .book-cover {
-    height: 250px;
+  .shop-filters {
+    flex-direction: column;
   }
 
-  .bookshive-shop-container h2 {
-    font-size: 1.6rem;
+  .book-card img {
+    width: 130px;
+    height: 190px;
+  }
+
+  .bookshive-author-dashboard form.add-book-form {
+    grid-template-columns: 1fr;
   }
 }
